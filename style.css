@@ -192,6 +192,45 @@ body {
     box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
 }
 
+/* 音乐控制开关 */
+.music-control {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 100;
+}
+
+.music-toggle-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 20px;
+    background: rgba(255, 255, 255, 0.8);
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 1rem;
+    color: #333;
+    backdrop-filter: blur(5px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.music-toggle-btn:hover {
+    background: rgba(255, 255, 255, 0.9);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.music-toggle-btn.muted {
+    background: rgba(255, 255, 255, 0.5);
+    color: #999;
+}
+
+.music-icon {
+    font-size: 1.2rem;
+}
+
 /* 轮播图容器 */
 .slideshow-container {
     position: absolute;
@@ -212,6 +251,7 @@ body {
     overflow: hidden;
     border-radius: 25px;
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2), 0 0 100px rgba(255, 255, 255, 0.3);
+    z-index: 50; /* Higher than floating message z-index */
 }
 
 .slide {
@@ -235,7 +275,8 @@ body {
 .slide img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
+    background-color: rgba(0, 0, 0, 0.05);
     border-radius: 25px;
     /* 添加渐影效果 */
     box-shadow: 
@@ -301,29 +342,37 @@ body {
 /* 浮动消息 - 苹果风格气泡 */
 .floating-message {
     position: absolute;
-    background: rgba(255, 255, 255, 0.95);
-    color: #ff6b9d;
-    padding: 15px 20px;
-    border-radius: 20px 20px 20px 5px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    animation: floatMessage ease-in-out forwards;
-    pointer-events: none;
-    font-size: 1.1rem;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.8) 100%);
+    padding: 10px 16px;
+    border-radius: 20px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
+    font-size: 0.95rem;
+    color: #333;
+    z-index: 40; /* Lower than slideshow z-index */
+    transform-style: preserve-3d;
+    perspective: 1000px;
+    animation: floatMessage ease-in-out infinite;
+    backdrop-filter: blur(5px);
+    max-width: 200px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
     text-align: center;
-    max-width: 250px;
-    font-weight: 500;
+    transform: translateZ(10px);
 }
 
-.floating-message::before {
+/* 移除气泡尖角，简化样式以避免遮挡 */
+
+/* 苹果风格的消息气泡效果 */
+.floating-message::after {
     content: '';
     position: absolute;
-    bottom: -5px;
-    left: 15px;
-    width: 10px;
-    height: 10px;
-    background: rgba(255, 255, 255, 0.95);
-    transform: rotate(45deg);
-    border-radius: 0 0 5px 0;
+    top: 10%;
+    right: 10%;
+    width: 15%;
+    height: 15%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0) 70%);
+    border-radius: 50%;
+    pointer-events: none;
 }
 
 /* 动画 */
@@ -338,16 +387,16 @@ body {
 
 @keyframes float {
     0% {
-        transform: translateY(0) translateX(0) rotate(-2deg);
+        transform: translateY(0) translateX(0) rotate(-1deg);
     }
     25% {
-        transform: translateY(-100px) translateX(15px) rotate(2deg);
+        transform: translateY(-100px) translateX(10px) rotate(1deg);
     }
     50% {
-        transform: translateY(-200px) translateX(0) rotate(-1deg);
+        transform: translateY(-200px) translateX(0) rotate(-0.5deg);
     }
     75% {
-        transform: translateY(-300px) translateX(-15px) rotate(1deg);
+        transform: translateY(-300px) translateX(-10px) rotate(0.5deg);
     }
     100% {
         transform: translateY(-100vh) translateX(0) rotate(0deg);
@@ -379,20 +428,16 @@ body {
 
 @keyframes floatMessage {
     0% {
-        opacity: 0;
-        transform: translateY(15px) scale(0.95);
+        opacity: 0.8;
+        transform: translateZ(10px) translateY(0px);
     }
-    15% {
+    50% {
         opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-    85% {
-        opacity: 1;
-        transform: translateY(0) scale(1);
+        transform: translateZ(10px) translateY(-8px);
     }
     100% {
-        opacity: 0;
-        transform: translateY(-15px) scale(0.95);
+        opacity: 0.8;
+        transform: translateZ(10px) translateY(0px);
     }
 }
 

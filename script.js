@@ -10,6 +10,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const backgroundMusic = document.getElementById('background-music');
     const balloonsContainer = document.getElementById('balloons-container');
     const bubblesContainer = document.getElementById('bubbles-container');
+    const musicToggle = document.getElementById('music-toggle');
+    const musicIcon = musicToggle.querySelector('.music-icon');
+    const musicText = musicToggle.querySelector('.music-text');
+
+    // 音乐播放状态
+    let isMusicPlaying = true;
 
     // 爱情宣言数组
     const loveMessages = [
@@ -35,38 +41,66 @@ document.addEventListener('DOMContentLoaded', function() {
         { path: 'photos/1.jpg', alt: '姿妤的照片1' },
         { path: 'photos/2.jpg', alt: '姿妤的照片2' },
         { path: 'photos/3.jpg', alt: '姿妤的照片3' },
-        { path: 'photos/4.jpg', alt: '姿妤的照片4' },
-        { path: 'photos/5.jpg', alt: '姿妤的照片5' },
-        { path: 'photos/6.jpg', alt: '姿妤的照片6' },
-        { path: 'photos/7.jpg', alt: '姿妤的照片7' }
+        { path: 'photos/4.jpg', alt: '姿妤的照片4' }
+        // { path: 'photos/5.jpg', alt: '姿妤的照片5' },
+        // { path: 'photos/6.jpg', alt: '姿妤的照片6' },
+        // { path: 'photos/7.jpg', alt: '姿妤的照片7' }
     ];
 
     // 进入主页面
     enterButton.addEventListener('click', function() {
         welcomeScreen.style.opacity = '0';
-        
+
         setTimeout(() => {
             welcomeScreen.style.display = 'none';
             mainScreen.classList.remove('hidden');
-            
+
             setTimeout(() => {
                 mainScreen.classList.add('visible');
                 // 播放背景音乐
-                backgroundMusic.play().catch(e => {
-                    console.log('背景音乐播放失败:', e);
-                });
-                
+                playMusic();
+
                 // 开始生成装饰
                 createBalloons();
                 createBubbles();
-                
+
                 // 开始显示浮动消息
                 showFloatingMessages();
-                
+
                 // 初始化轮播图
-                initSlideshow();
+                initSlideshowWithOrientation();
             }, 100);
         }, 1000);
+    });
+
+    // 音乐播放控制函数
+    function playMusic() {
+        if (isMusicPlaying) {
+            backgroundMusic.play().catch(e => {
+                console.log('背景音乐播放失败:', e);
+            });
+        }
+    }
+
+    function pauseMusic() {
+        backgroundMusic.pause();
+    }
+
+    // 音乐开关点击事件
+    musicToggle.addEventListener('click', function() {
+        isMusicPlaying = !isMusicPlaying;
+
+        if (isMusicPlaying) {
+            playMusic();
+            musicToggle.classList.remove('muted');
+            musicIcon.textContent = '🎵';
+            musicText.textContent = '背景音乐';
+        } else {
+            pauseMusic();
+            musicToggle.classList.add('muted');
+            musicIcon.textContent = '🔇';
+            musicText.textContent = '音乐已关闭';
+        }
     });
 
     // 轮播图功能
@@ -80,28 +114,28 @@ document.addEventListener('DOMContentLoaded', function() {
             const slide = document.createElement('div');
             slide.classList.add('slide');
             if (index === 0) slide.classList.add('active');
-            
+
             const img = document.createElement('img');
             img.src = photo.path;
             img.alt = photo.alt;
-            
+
             slide.appendChild(img);
             slideshow.appendChild(slide);
-            
+
             // 创建指示器
             const indicator = document.createElement('div');
             indicator.classList.add('indicator');
             if (index === 0) indicator.classList.add('active');
-            
+
             indicator.addEventListener('click', () => {
                 showSlide(index);
                 // 重置自动播放
                 resetSlideshowInterval();
             });
-            
+
             slideshowIndicators.appendChild(indicator);
         });
-        
+
         // 开始自动轮播
         startSlideshow();
     }
@@ -109,15 +143,15 @@ document.addEventListener('DOMContentLoaded', function() {
     function showSlide(index) {
         const slides = document.querySelectorAll('.slide');
         const indicators = document.querySelectorAll('.indicator');
-        
+
         // 隐藏所有幻灯片
         slides.forEach(slide => slide.classList.remove('active'));
         indicators.forEach(indicator => indicator.classList.remove('active'));
-        
+
         // 显示当前幻灯片
         slides[index].classList.add('active');
         indicators[index].classList.add('active');
-        
+
         currentSlide = index;
     }
 
@@ -138,12 +172,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // 生成苹果风格气球
     function createBalloons() {
         const colors = ['red', 'orange', 'yellow', 'green', 'blue', 'indigo', 'purple', 'pink'];
-        
+
         function addBalloon() {
             const balloon = document.createElement('div');
             const color = colors[Math.floor(Math.random() * colors.length)];
             const size = Math.random() * 40 + 30; // 30-70px
-            
+
             balloon.classList.add('balloon', `balloon-${color}`);
             balloon.style.width = `${size}px`;
             balloon.style.height = `${size * 1.3}px`; // 保持气球比例
@@ -151,13 +185,13 @@ document.addEventListener('DOMContentLoaded', function() {
             balloon.style.animationDuration = `${Math.random() * 15 + 20}s`; // 更慢的上升速度
             balloon.style.opacity = `${Math.random() * 0.3 + 0.7}`; // 更高的不透明度
             balloon.style.transform = `scale(${Math.random() * 0.3 + 0.8}) rotate(${Math.random() * 10 - 5}deg)`; // 轻微旋转
-            
+
             // 添加轻微的摇摆动画
             balloon.style.animationName = 'float';
             balloon.style.animationTimingFunction = 'ease-in-out';
-            
+
             balloonsContainer.appendChild(balloon);
-            
+
             // 气球飞出屏幕后移除
             setTimeout(() => {
                 // 添加淡出效果
@@ -166,12 +200,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 setTimeout(() => balloon.remove(), 1000);
             }, 30000);
         }
-        
+
         // 初始生成15个气球
         for (let i = 0; i < 15; i++) {
             setTimeout(addBalloon, i * 800);
         }
-        
+
         // 每隔4秒生成一个新气球
         setInterval(addBalloon, 4000);
     }
@@ -181,19 +215,19 @@ document.addEventListener('DOMContentLoaded', function() {
         function addBubble() {
             const bubble = document.createElement('div');
             const size = Math.random() * 50 + 15; // 15-65px
-            
+
             bubble.classList.add('bubble');
             bubble.style.width = `${size}px`;
             bubble.style.height = `${size}px`;
             bubble.style.left = `${Math.random() * 100}%`;
             bubble.style.animationDuration = `${Math.random() * 8 + 12}s`; // 更自然的上升速度
             bubble.style.opacity = `${Math.random() * 0.3 + 0.4}`; // 更真实的透明度
-            
+
             // 添加随机的水平移动
             bubble.style.transform = `translateX(${Math.random() * 20 - 10}px)`;
-            
+
             bubblesContainer.appendChild(bubble);
-            
+
             // 泡泡消失后移除
             setTimeout(() => {
                 // 添加淡出效果
@@ -202,12 +236,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 setTimeout(() => bubble.remove(), 1500);
             }, 15000);
         }
-        
+
         // 初始生成20个泡泡
         for (let i = 0; i < 20; i++) {
             setTimeout(addBubble, i * 400);
         }
-        
+
         // 每隔800毫秒生成一个新泡泡
         setInterval(addBubble, 800);
     }
@@ -217,57 +251,57 @@ document.addEventListener('DOMContentLoaded', function() {
         function showMessage() {
             const message = document.createElement('div');
             const randomMessage = loveMessages[Math.floor(Math.random() * loveMessages.length)];
-            
+
             message.classList.add('floating-message');
             message.textContent = randomMessage;
-            
-            // 随机位置，但更集中在轮播图周围
+
+            // 确保消息不会挡住轮播图，将位置限制在轮播图周围但不会重叠
             const side = Math.floor(Math.random() * 4); // 0: 上, 1: 右, 2: 下, 3: 左
             let left, top;
-            
+
             switch(side) {
-                case 0: // 上方
-                    left = `${Math.random() * 70 + 15}%`; // 15%-85%
-                    top = '5%';
+                case 0: // 上方 - 更靠上
+                    left = `${Math.random() * 80 + 10}%`; // 10%-90%
+                    top = `${Math.random() * 15 + 2}%`; // 2%-17%
                     break;
-                case 1: // 右侧
-                    left = '85%';
-                    top = `${Math.random() * 60 + 20}%`; // 20%-80%
+                case 1: // 右侧 - 更靠右
+                    left = `${Math.random() * 10 + 85}%`; // 85%-95%
+                    top = `${Math.random() * 80 + 10}%`; // 10%-90%
                     break;
-                case 2: // 下方
-                    left = `${Math.random() * 70 + 15}%`; // 15%-85%
-                    top = '80%';
+                case 2: // 下方 - 更靠下
+                    left = `${Math.random() * 80 + 10}%`; // 10%-90%
+                    top = `${Math.random() * 15 + 83}%`; // 83%-98%
                     break;
-                case 3: // 左侧
-                    left = '5%';
-                    top = `${Math.random() * 60 + 20}%`; // 20%-80%
+                case 3: // 左侧 - 更靠左
+                    left = `${Math.random() * 10 + 0}%`; // 0%-10%
+                    top = `${Math.random() * 80 + 10}%`; // 10%-90%
                     break;
             }
-            
+
             message.style.left = left;
             message.style.top = top;
-            message.style.animationDuration = `${Math.random() * 2 + 4}s`; // 4-6秒
-            
+            message.style.animationDuration = `${Math.random() * 3 + 5}s`; // 5-8秒
+
             floatingMessages.appendChild(message);
-            
+
             // 消息动画结束后移除
             setTimeout(() => {
-                message.style.transition = 'opacity 0.5s ease-out, transform 0.5s ease-out';
+                message.style.transition = 'opacity 0.8s ease-out, transform 0.8s ease-out';
                 message.style.opacity = '0';
-                message.style.transform = 'translateY(-10px)';
+                message.style.transform = 'translateY(-15px) scale(0.9)';
                 setTimeout(() => {
-                    message.remove();
-                }, 500);
-            }, 6000);
+                    floatingMessages.removeChild(message);
+                }, 800);
+            }, 7000);
         }
-        
-        // 初始密集显示5条消息
-        for (let i = 0; i < 5; i++) {
-            setTimeout(showMessage, i * 500);
+
+        // 初始显示3条消息（减少初始密度）
+        for (let i = 0; i < 3; i++) {
+            setTimeout(showMessage, i * 1000);
         }
-        
-        // 每隔800毫秒显示一条新消息（更紧密的间隔）
-        setInterval(showMessage, 800);
+
+        // 每隔2秒显示一条新消息（减少消息密度，避免混乱）
+        setInterval(showMessage, 2000);
     }
 
     // 处理键盘事件
@@ -294,20 +328,62 @@ document.addEventListener('DOMContentLoaded', function() {
         if (slideshowContainer) {
             const viewportWidth = window.innerWidth;
             const viewportHeight = window.innerHeight;
-            
-            if (viewportWidth < 768) {
+
+            // 根据屏幕方向调整轮播图尺寸
+            if (viewportWidth < viewportHeight) { // 竖屏
                 slideshowContainer.style.width = '90%';
-                slideshowContainer.style.height = '50vh';
-            } else {
-                slideshowContainer.style.width = '80%';
-                slideshowContainer.style.height = '70vh';
+                slideshowContainer.style.height = '60vh';
+            } else { // 横屏
+                slideshowContainer.style.width = '90%';
+                slideshowContainer.style.height = '75vh';
             }
         }
     }
 
+    // 处理图片方向问题
+    function fixImageOrientation() {
+        // 为所有轮播图中的图片添加加载完成事件
+        const slideImages = document.querySelectorAll('.slide img');
+        slideImages.forEach(img => {
+            if (img.complete) {
+                // 如果图片已经加载完成，直接处理
+                processImage(img);
+            } else {
+                img.addEventListener('load', function() {
+                    processImage(this);
+                });
+            }
+        });
+    }
+
+    // 处理单个图片
+    function processImage(img) {
+        // 获取图片原始尺寸
+        const imgWidth = img.naturalWidth;
+        const imgHeight = img.naturalHeight;
+
+        // 根据图片的宽高比设置显示样式
+        if (imgWidth > imgHeight) {
+            // 横图，确保在容器内完整显示
+            img.style.objectFit = 'contain';
+            img.style.maxHeight = '100%';
+        } else {
+            // 竖图，同样确保完整显示
+            img.style.objectFit = 'contain';
+            img.style.maxWidth = '100%';
+        }
+    }
+
+    // 在轮播图初始化后处理图片方向
+    function initSlideshowWithOrientation() {
+        initSlideshow();
+        // 延迟一点时间确保图片已经开始加载
+        setTimeout(fixImageOrientation, 500);
+    }
+
     // 监听窗口大小变化
     window.addEventListener('resize', handleResize);
-    
+
     // 初始执行一次
     handleResize();
 });
