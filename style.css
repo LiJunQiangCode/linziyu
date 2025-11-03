@@ -1,0 +1,422 @@
+/* 全局样式 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Microsoft YaHei', Arial, sans-serif;
+    overflow: hidden;
+    background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+}
+
+/* 欢迎页面 */
+.welcome-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    transition: opacity 1s ease-out;
+}
+
+.welcome-content {
+    text-align: center;
+    color: white;
+    max-width: 600px;
+    padding: 40px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.welcome-content h1 {
+    font-size: 3.5rem;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    animation: glow 2s ease-in-out infinite alternate;
+}
+
+.welcome-content p {
+    font-size: 1.5rem;
+    margin-bottom: 30px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.enter-button {
+    padding: 15px 40px;
+    font-size: 1.2rem;
+    background-color: #ff6b9d;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(255, 107, 157, 0.3);
+}
+
+.enter-button:hover {
+    background-color: #ff528f;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(255, 107, 157, 0.4);
+}
+
+.enter-button:active {
+    transform: translateY(1px);
+}
+
+/* 主内容页面 */
+.main-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 1s ease-in;
+}
+
+.main-screen.visible {
+    opacity: 1;
+}
+
+.hidden {
+    display: none;
+}
+
+/* 苹果风格气球样式 */
+#balloons-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.balloon {
+    position: absolute;
+    bottom: -100px;
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    animation: float linear infinite;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transform-style: preserve-3d;
+    perspective: 1000px;
+}
+
+.balloon::before {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 3px;
+    height: 20px;
+    background-color: rgba(0, 0, 0, 0.1);
+    z-index: -1;
+}
+
+.balloon::after {
+    content: '';
+    position: absolute;
+    top: 15%;
+    right: 20%;
+    width: 25%;
+    height: 25%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0) 70%);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+/* 气球颜色 - 苹果风格配色 */
+.balloon-red {
+    background: linear-gradient(135deg, #FF6B6B 0%, #FF5252 100%);
+}
+
+.balloon-orange {
+    background: linear-gradient(135deg, #FF9F43 0%, #FF7675 100%);
+}
+
+.balloon-yellow {
+    background: linear-gradient(135deg, #FFEAA7 0%, #FFD32A 100%);
+}
+
+.balloon-green {
+    background: linear-gradient(135deg, #55EFc4 0%, #00B894 100%);
+}
+
+.balloon-blue {
+    background: linear-gradient(135deg, #74B9FF 0%, #0984E3 100%);
+}
+
+.balloon-indigo {
+    background: linear-gradient(135deg, #A29BFE 0%, #6C5CE7 100%);
+}
+
+.balloon-purple {
+    background: linear-gradient(135deg, #DDA0DD 0%, #BA55D3 100%);
+}
+
+.balloon-pink {
+    background: linear-gradient(135deg, #FF7675 0%, #FD79A8 100%);
+}
+
+/* 苹果风格泡泡样式 */
+#bubbles-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.bubble {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.6) 30%, rgba(255, 255, 255, 0.3) 60%, rgba(255, 255, 255, 0) 100%);
+    animation: floatUp ease-in-out infinite;
+    backdrop-filter: blur(1px);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+}
+
+/* 轮播图容器 */
+.slideshow-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    max-width: 600px;
+    height: 70vh;
+    max-height: 600px;
+    perspective: 1000px;
+}
+
+.slideshow {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 25px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2), 0 0 100px rgba(255, 255, 255, 0.3);
+}
+
+.slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.slide.active {
+    opacity: 1;
+    z-index: 1;
+}
+
+.slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 25px;
+    /* 添加渐影效果 */
+    box-shadow: 
+        0 0 0 1px rgba(255, 255, 255, 0.1),
+        inset 0 0 50px rgba(0, 0, 0, 0.3);
+}
+
+/* 轮播指示器 */
+.slideshow-indicators {
+    position: absolute;
+    bottom: -50px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    z-index: 10;
+}
+
+.indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.indicator.active {
+    background-color: white;
+    transform: scale(1.3);
+}
+
+/* 爱情宣言 - 苹果风格 */
+.love-message {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    color: white;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    padding: 15px 30px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 30px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.love-message h2 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    animation: glow 2s ease-in-out infinite alternate;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.love-message p {
+    font-size: 1.2rem;
+    font-weight: 300;
+}
+
+/* 浮动消息 - 苹果风格气泡 */
+.floating-message {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.95);
+    color: #ff6b9d;
+    padding: 15px 20px;
+    border-radius: 20px 20px 20px 5px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    animation: floatMessage ease-in-out forwards;
+    pointer-events: none;
+    font-size: 1.1rem;
+    text-align: center;
+    max-width: 250px;
+    font-weight: 500;
+}
+
+.floating-message::before {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 15px;
+    width: 10px;
+    height: 10px;
+    background: rgba(255, 255, 255, 0.95);
+    transform: rotate(45deg);
+    border-radius: 0 0 5px 0;
+}
+
+/* 动画 */
+@keyframes glow {
+    from {
+        text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #ff6b9d, 0 0 20px #ff6b9d;
+    }
+    to {
+        text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #ff6b9d, 0 0 40px #ff6b9d;
+    }
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0) translateX(0) rotate(-2deg);
+    }
+    25% {
+        transform: translateY(-100px) translateX(15px) rotate(2deg);
+    }
+    50% {
+        transform: translateY(-200px) translateX(0) rotate(-1deg);
+    }
+    75% {
+        transform: translateY(-300px) translateX(-15px) rotate(1deg);
+    }
+    100% {
+        transform: translateY(-100vh) translateX(0) rotate(0deg);
+    }
+}
+
+@keyframes floatUp {
+    0% {
+        transform: translateY(100vh) translateX(0) scale(0.8);
+        opacity: 0.4;
+    }
+    25% {
+        transform: translateY(75vh) translateX(10px) scale(0.9);
+        opacity: 0.5;
+    }
+    50% {
+        transform: translateY(50vh) translateX(-5px) scale(1);
+        opacity: 0.5;
+    }
+    75% {
+        transform: translateY(25vh) translateX(8px) scale(0.9);
+        opacity: 0.3;
+    }
+    100% {
+        transform: translateY(-100px) translateX(-3px) scale(0.8);
+        opacity: 0;
+    }
+}
+
+@keyframes floatMessage {
+    0% {
+        opacity: 0;
+        transform: translateY(15px) scale(0.95);
+    }
+    15% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+    85% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-15px) scale(0.95);
+    }
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .welcome-content h1 {
+        font-size: 2.5rem;
+    }
+    
+    .photos-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .love-message h2 {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .welcome-content h1 {
+        font-size: 2rem;
+    }
+    
+    .photos-container {
+        grid-template-columns: 1fr;
+    }
+}

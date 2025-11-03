@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>给姿妤的惊喜</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <!-- 欢迎页面 -->
+    <div id="welcome-screen" class="welcome-screen">
+        <div class="welcome-content">
+            <h1>亲爱的林姿妤</h1>
+            <p>这是一份特别的礼物，只为你准备 ❤️</p>
+            <button id="enter-button" class="enter-button">点击进入我们的世界</button>
+        </div>
+    </div>
+
+    <!-- 主内容页面 -->
+    <div id="main-screen" class="main-screen hidden">
+        <!-- 背景音乐 -->
+        <audio id="background-music" loop>
+            <source src="music.mp3" type="audio/mpeg">
+        </audio>
+
+        <!-- 气球和泡泡容器 -->
+        <div id="balloons-container"></div>
+        <div id="bubbles-container"></div>
+
+        <!-- 轮播图片区域 -->
+        <div class="slideshow-container">
+            <div id="slideshow" class="slideshow">
+                <!-- 轮播图片将通过JS动态加载 -->
+            </div>
+            <div class="slideshow-indicators">
+                <!-- 指示器将通过JS动态加载 -->
+            </div>
+        </div>
+
+        <!-- 爱情宣言 -->
+        <div class="love-message">
+            <h2>致我最爱的林姿妤</h2>
+            <p>每一天有你的陪伴都是最美好的礼物</p>
+        </div>
+
+        <!-- 浮动消息容器 -->
+        <div id="floating-messages"></div>
+    </div>
+</body>
+</html>
